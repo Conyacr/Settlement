@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import kds.com.kdmsettlement.BaseApp;
 import kds.com.kdmsettlement.R;
 import kds.com.kdmsettlement.models.CityListData;
@@ -20,28 +22,21 @@ import kds.com.kdmsettlement.networking.NetworkFacade;
  */
 
 public class HomeActivity extends BaseApp implements HomeView {
-
-    private RecyclerView list;
     @Inject
     public NetworkFacade networkFacade;
-    ProgressBar progressBar;
+    @BindView(R.id.list) RecyclerView list;
+    @BindView(R.id.progress) ProgressBar progressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getDependencies().inject(this);
-
-        renderView();
+        setContentView(R.layout.activity_home);
+        ButterKnife.bind(this);
         init();
 
         HomePresenter presenter = new HomePresenter(networkFacade, this);
         presenter.initPresenter();
-    }
-
-    public  void renderView(){
-        setContentView(R.layout.activity_home);
-        list = findViewById(R.id.list);
-        progressBar = findViewById(R.id.progress);
     }
 
     public void init(){

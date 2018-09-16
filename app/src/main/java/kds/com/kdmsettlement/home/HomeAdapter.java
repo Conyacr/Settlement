@@ -12,6 +12,8 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import kds.com.kdmsettlement.R;
 import kds.com.kdmsettlement.models.CityListData;
 
