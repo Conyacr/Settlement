@@ -1,10 +1,12 @@
 package kds.com.kdmsettlement.home;
 
-import kds.com.kdmsettlement.models.CityListResponse;
-import kds.com.kdmsettlement.networking.NetworkError;
+import android.util.Log;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 import kds.com.kdmsettlement.networking.NetworkFacade;
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+
 
 /**
  * Created by Ryan on 8/3/2018.
@@ -13,35 +15,27 @@ import rx.subscriptions.CompositeSubscription;
 public class HomePresenter {
     private final NetworkFacade networkFacade;
     private final HomeView view;
-    private CompositeSubscription subscriptions;
+    private CompositeDisposable disposable;
 
     public HomePresenter(NetworkFacade networkFacade, HomeView view) {
         this.networkFacade = networkFacade;
         this.view = view;
-        this.subscriptions = new CompositeSubscription();
+        this.disposable = new CompositeDisposable();
     }
 
-    public void getCityList() {
-        view.showWait();
-
-        Subscription subscription = networkFacade.getCityList(new NetworkFacade.GetCityListCallback() {
-            @Override
-            public void onSuccess(CityListResponse cityListResponse) {
-                view.removeWait();
-                view.getCityListSuccess(cityListResponse);
-            }
-
-            @Override
-            public void onError(NetworkError networkError) {
-                view.removeWait();
-                view.onFailure(networkError.getAppErrorMessage());
-            }
-
-        });
-
-        subscriptions.add(subscription);
+    public void initPresenter() {
+        this.disposable.add(
+                networkFacade.getCityList()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(cityListResponse -> {
+                                view.hideWait();
+                                view.getCityListSuccess(cityListResponse);
+                            },
+                            throwable -> Log.e("Error", throwable.getMessage())));
     }
+
     public void onStop() {
-        subscriptions.unsubscribe();
+        disposable.dispose();
     }
 }

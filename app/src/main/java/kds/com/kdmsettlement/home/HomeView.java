@@ -9,6 +9,8 @@ import kds.com.kdmsettlement.models.CityListResponse;
 public interface HomeView {
     void showWait();
 
+    void hideWait();
+
     void removeWait();
 
     void onFailure(String appErrorMessage);

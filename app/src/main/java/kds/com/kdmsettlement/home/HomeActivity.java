@@ -35,7 +35,7 @@ public class HomeActivity extends BaseApp implements HomeView {
         init();
 
         HomePresenter presenter = new HomePresenter(networkFacade, this);
-        presenter.getCityList();
+        presenter.initPresenter();
     }
 
     public  void renderView(){
@@ -77,5 +77,10 @@ public class HomeActivity extends BaseApp implements HomeView {
 
         list.setAdapter(adapter);
 
+    }
+
+    @Override
+    public void hideWait() {
+        progressBar.setVisibility(View.GONE);
     }
 }

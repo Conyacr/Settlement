@@ -7,7 +7,8 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import retrofit2.adapter.rxjava.HttpException;
+
+import retrofit2.adapter.rxjava2.HttpException;
 
 import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
 
