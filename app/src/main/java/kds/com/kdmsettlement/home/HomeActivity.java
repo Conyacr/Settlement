@@ -1,9 +1,11 @@
 package kds.com.kdmsettlement.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -11,8 +13,10 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import kds.com.kdmsettlement.BaseApp;
 import kds.com.kdmsettlement.R;
+import kds.com.kdmsettlement.milestone.YearlyMinestoneActivity;
 import kds.com.kdmsettlement.models.CityListData;
 import kds.com.kdmsettlement.models.CityListResponse;
 import kds.com.kdmsettlement.networking.NetworkFacade;
@@ -26,6 +30,13 @@ public class HomeActivity extends BaseApp implements HomeView {
     public NetworkFacade networkFacade;
     @BindView(R.id.list) RecyclerView list;
     @BindView(R.id.progress) ProgressBar progressBar;
+    @BindView(R.id.button)
+    Button button;
+
+    @OnClick(R.id.button)
+    public void newActivity(View view) {
+        startActivity(new Intent(this, YearlyMinestoneActivity.class));
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
